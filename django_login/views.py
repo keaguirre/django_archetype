@@ -15,7 +15,7 @@ def login_user(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'You have successfully logged in')
-            return redirect('/', messages)
+            return redirect('/', {'messages': messages, 'user': user.email})
         
         else:
             error_msj= messages.error(request, 'Invalid email or password')
