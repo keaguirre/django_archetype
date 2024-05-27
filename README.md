@@ -20,15 +20,22 @@
 ## Create an App:
 python manage.py startapp [app_name]
 ```
-app_name/
-    __init__.py
-    admin.py
-    apps.py
-    migrations/
+mysite/
+    manage.py
+    mysite/
         __init__.py
-    models.py
-    tests.py
-    views.py
+        settings.py
+        urls.py
+        asgi.py
+        wsgi.py
+    app_name/
+        __init__.py
+        admin.py
+        apps.py
+        migrations/
+        models.py
+        tests.py
+        views.py
 ```
 
 ### Create virtualenv: ``` python -m venv /path/to/new/virtual/environment```
