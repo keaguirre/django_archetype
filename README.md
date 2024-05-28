@@ -44,3 +44,10 @@ mysite/
 - Linux ```sh ./virtualenv/bin/activate```
 
 ### Deactivate virtualenv ```deactivate```
+
+## Docker
+### Run bash in python container
+ docker run --name [container-name] -a stdin -a stdout -t -i [image-name] /bin/bash
+
+ ### Run new container with volume
+ docker run --name django-login -v /mnt/c/Users/kevin/OneDrive/Escritorio/django_login:/app -a stdin -a stdout -t -i django-login /bin/bash
