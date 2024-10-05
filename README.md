@@ -46,6 +46,9 @@ mysite/
     └── views.py
 ```
 
+## Variable .env From NeonDB
+DATABASE_URL=''
+
 ## Docker
 ### Run bash in python container
  docker run --name [container-name] -a stdin -a stdout -t -i [image-name] /bin/bash
