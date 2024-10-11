@@ -5,6 +5,10 @@
 __pycache__
 db.sqlite3
 media
+lib/
+./lib
+lib64/
+pyenv.cfg
 
 # Visual Studio Code # 
 .vscode/* 
@@ -17,6 +21,7 @@ media
 # Environments 
 .env 
 .venv 
+virtualenv
 .virtualenv
 env/ 
 venv/ 
