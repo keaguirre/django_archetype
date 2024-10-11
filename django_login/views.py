@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 def home(request):
     return render(request, 'base.html')
@@ -27,10 +28,16 @@ def register_user(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            email = form.cleaned_data.get('email')
+            email = form.cleaned_data.get('username')  # Campo de entrada original de 'email'
+            password = form.cleaned_data.get('password1')
+            
+            # Separar el correo
+            username = email.split('@')[0]  # Parte antes de '@' para el username
+
+            # Crear usuario con el username y email personalizados
+            user = User.objects.create_user(username=username, email=email, password=password)
             password = form.cleaned_data.get('password')
-            user = authenticate(request, username=email, password=password)
+            user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 messages.success(request, 'You have successfully registered')
