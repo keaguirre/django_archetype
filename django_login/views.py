@@ -1,10 +1,14 @@
 # views.py
+import os
+from dotenv import load_dotenv
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django_login.sendgrid_mails import send_email
 
+load_dotenv()
 def home(request):
     return render(request, 'base.html')
 
@@ -34,9 +38,15 @@ def register_user(request):
             user = User.objects.create_user(username=username, email=email, password=password)
             password = form.cleaned_data.get('password1')
             user = authenticate(request, username=username, password=password)
+            from_mail = os.getenv('FROM_MAIL')
+            to_email = email
+            mail_subject = 'Registro exitoso'
+            mail_content = f'Hola, {username}, te has registrado con éxito en nuestra plataforma.'
+            send_email(from_mail, to_email, mail_subject, mail_content)
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Registrado con éxito')
+
                 return redirect('/', messages)
             else:
                 error_msj = messages.error(request, user)

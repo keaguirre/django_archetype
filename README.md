@@ -8,6 +8,8 @@
   
 ### Desactivar ambiente virtual ```deactivate```
 
+### Importar las librerias del ambiente ```pip freeze > requirements.txt``` 
+
 ### Create project: 
     pip install django
     django-admin startproject mysite
@@ -46,8 +48,10 @@ mysite/
     └── views.py
 ```
 
-## Variable .env From NeonDB
+## .env Vars Required
 DATABASE_URL=''
+SENDGRID_API_KEY=''
+FROM_MAIL=''
 
 ## Docker
 ### Run bash in python container
@@ -55,3 +59,12 @@ DATABASE_URL=''
 
  ### Run new container with a dev volume
  docker run --name django-login -v /ruta/a/tu/app/django_login:/app -a stdin -a stdout -t -i django-login /bin/bash
+
+## Integrar SendGrid
+1. Crearse una cuenta
+2. Crear un sender
+3. Crear la ApiKey
+4. Email API -> Integration Guide
+5. Choose WebAPI -> Python
+6. pip install sendgrid
+7. Implementar.
