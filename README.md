@@ -14,10 +14,11 @@
     python manage.py runserver
 
 ## .env Vars Required
+```
 DATABASE_URL=''
 SENDGRID_API_KEY=''
 FROM_MAIL=''
-
+```
 ## Docker
 ### Run bash in python container
  docker run --name [container-name] -a stdin -a stdout -t -i [image-name] /bin/bash
