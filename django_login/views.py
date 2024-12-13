@@ -16,7 +16,7 @@ def login_user(request):
     if request.method == 'POST':
         email = request.POST["email"]
         password = request.POST["password"]
-        user = authenticate(request, username=email, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             messages.success(request, 'Has iniciado sesión de forma exitosa')
@@ -32,19 +32,23 @@ def register_user(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('username')  # Campo de entrada original de 'email'
+            print('form is valid')
+            email = form.cleaned_data.get('email')  # Campo de entrada original de 'email'
             password = form.cleaned_data.get('password1')
-            username = email.split('@')[0]  # Parte antes de '@' para el username y guarda email desde el 'username' como correo que proveniente del formulario en el campo de email
-            user = User.objects.create_user(username=username, email=email, password=password)
-            password = form.cleaned_data.get('password1')
-            user = authenticate(request, username=username, password=password)
-            from_mail = os.getenv('FROM_MAIL')
-            to_email = email
-            mail_subject = 'Registro exitoso'
-            mail_content = f'Hola, {username}, te has registrado con éxito en nuestra plataforma.'
-            send_email(from_mail, to_email, mail_subject, mail_content)
+            password2 = form.cleaned_data.get('password2')
+            if password != password2:
+                error_msj = messages.error(request, 'Las contraseñas no coinciden')
+                return render(request, 'register.html', {'title': error_msj})
+            else:
+                user = User.objects.create_user(email=email, password=password)
+                user_auth = authenticate(request, email=email, password=password)
+                from_mail = os.getenv('FROM_MAIL')
+                to_email = email
+                mail_subject = 'Registro exitoso'
+                mail_content = f'Hola, {email}, te has registrado con éxito en nuestra plataforma.'
+                send_email(from_mail, to_email, mail_subject, mail_content)
             if user is not None:
-                login(request, user)
+                login(request, user_auth)
                 messages.success(request, 'Registrado con éxito')
 
                 return redirect('/', messages)
@@ -52,6 +56,7 @@ def register_user(request):
                 error_msj = messages.error(request, user)
                 return render(request, 'register.html', {'title': error_msj})
         else:
+            print(form.is_valid(),'form is not valid')
             error_msj = messages.error(request, str(form.errors))
             return render(request, 'register.html', {'title': error_msj})
     else:
