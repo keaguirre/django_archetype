@@ -5,7 +5,8 @@
 ### Activar ambiente virtual:
 - Windows: `./virtualenv/Scripts/activate`
 - Linux: `source ./virtualenv/bin/activate`
-  
+### Instalar paquetes:
+``` pip install -r requirements.txt```
 ### Desactivar ambiente virtual ```deactivate```
 
 ### Instalar dependencias para el proyecto `pip install -r /path/to/requirements.txt`
