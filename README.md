@@ -19,6 +19,7 @@
 DATABASE_URL=''
 SENDGRID_API_KEY=''
 FROM_MAIL=''
+SECRET_KEY=''
 ```
 ## Docker
 ### Run bash in python container
