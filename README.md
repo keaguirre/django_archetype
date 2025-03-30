@@ -14,7 +14,7 @@
 ### Correr servidor local: 
     python manage.py runserver
 
-## .env Vars Required
+## .env variables required
 ```
 DATABASE_URL=''
 SENDGRID_API_KEY=''
@@ -74,3 +74,10 @@ mysite/
 5. Choose WebAPI -> Python
 6. pip install sendgrid
 7. Implementar.
+
+# To Do:
+- [ ] Integrar nuevos modelos para endpoints standard
+- [ ] Integrar Django Rest Framework
+- [ ] Integrar Swagger para documentar la API
+- [ ] Crear un docker-compose para el proyecto
+- [ ] Crear un .env.example para el proyecto
