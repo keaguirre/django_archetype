@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout_user/', logout_user, name='logout_user'),
     path('register_page/', register_page, name='register_page'),
     path('register_user/', register_user, name='register_user'),
+    path('api/v1/', include('users_api.urls')),
 ]

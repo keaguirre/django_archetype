@@ -10,6 +10,9 @@ lib/
 lib64/
 ./lib64
 .pyenv.cfg
+./users_api/migrations
+*.sqlite3
+*.db
 
 # Visual Studio Code # 
 .vscode/* 
