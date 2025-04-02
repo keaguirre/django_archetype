@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y git --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 # Clonamos el repositorio
-RUN git clone https://github.com/keaguirre/django_simplest_project.git .
+RUN git clone https://github.com/keaguirre/django_archetype .
 
 # Instalamos las dependencias de Django
 RUN pip install --no-cache-dir -r requirements.txt
