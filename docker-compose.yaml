@@ -1,0 +1,44 @@
+# Dev Environment for Django with PostgreSQL
+# Variable names are defined in the .env file
+# Check Readme for Settings.py for database connection settings for the Dev Pod
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: django_archetype_db
+      POSTGRES_USER: django_admin
+      POSTGRES_PASSWORD: DjangoDevPass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: django_app
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_NAME: django_archetype_db
+      DATABASE_USER: django_admin
+      DATABASE_PASSWORD: DjangoDevPass
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+
+# Crear carpeta postgres_data en /etc de la maquina host para almacenar los datos de PostgreSQL
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /etc/postgres_data
+      o: bind
