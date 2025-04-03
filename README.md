@@ -83,7 +83,7 @@ docker run --name django-login -v /ruta/a/tu/app/django_login:/app -a stdin -a s
 
 # To Do:
 - [ ] Integrar nuevos modelos para endpoints standard
-- [ ] Integrar Django Rest Framework
+- [x] Integrar Django Rest Framework
 - [ ] Integrar Swagger para documentar la API
-- [ ] Crear un docker-compose para el proyecto
+- [x] Crear un docker-compose para el proyecto
 - [ ] Crear un .env.example para el proyecto
