@@ -13,6 +13,7 @@ lib64/
 ./users_api/migrations
 *.sqlite3
 *.db
+*/migrations
 
 # Visual Studio Code # 
 .vscode/* 
