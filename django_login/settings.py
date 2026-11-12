@@ -87,23 +87,43 @@ WSGI_APPLICATION = 'django_login.wsgi.application'
 #     }
 # }
 
-tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+# Dos formas de configurar la base:
+# 1. DATABASE_URL (Postgres administrado, p. ej. Neon o Render). Usa SSL por defecto;
+#    se puede cambiar con DATABASE_SSLMODE.
+# 2. Variables sueltas POSTGRES_DB / POSTGRES_USER / POSTGRES_PASSWORD / DATABASE_HOST /
+#    DATABASE_PORT (contenedor local de docker-compose, sin SSL).
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': tmpPostgres.path.replace('/', ''),
-        'USER': tmpPostgres.username,
-        'PASSWORD': tmpPostgres.password,
-        'HOST': tmpPostgres.hostname,
-        'PORT': 5432,
-        'OPTIONS': {
-            'sslmode': 'require',
-    },
-    'CONN_MAX_AGE': 0,  # Cierra las conexiones al final de cada solicitud
-    'CONN_HEALTH_CHECKS': True,  # Habilitar verificación de salud de las conexiones
+if DATABASE_URL:
+    tmpPostgres = urlparse(DATABASE_URL)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': tmpPostgres.path.replace('/', ''),
+            'USER': tmpPostgres.username,
+            'PASSWORD': tmpPostgres.password,
+            'HOST': tmpPostgres.hostname,
+            'PORT': tmpPostgres.port or 5432,
+            'OPTIONS': {
+                'sslmode': os.getenv('DATABASE_SSLMODE', 'require'),
+            },
+            'CONN_MAX_AGE': 0,  # Cierra las conexiones al final de cada solicitud
+            'CONN_HEALTH_CHECKS': True,  # Habilitar verificación de salud de las conexiones
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+            'PORT': os.getenv('DATABASE_PORT', '5432'),
+            'CONN_MAX_AGE': 0,
+            'CONN_HEALTH_CHECKS': True,
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
