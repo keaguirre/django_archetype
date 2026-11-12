@@ -41,6 +41,16 @@ SENDGRID_API_KEY=''
 FROM_MAIL=''
 SECRET_KEY=''
 ```
+## Levantar con Docker Compose (Postgres local)
+```bash
+docker compose up --build
+```
+- App: http://localhost:8000 · Postgres: localhost:5432
+- No requiere `.env`: el compose define las variables `POSTGRES_*` y `DATABASE_HOST/PORT`.
+- `settings.py` usa `DATABASE_URL` si está definida (Postgres administrado, con SSL); si no, usa las variables sueltas del contenedor local.
+- Las migraciones se generan y aplican al iniciar el contenedor `web`.
+- Sin `SENDGRID_API_KEY` el registro funciona igual; solo se omite el envío de correo.
+
 ## .env file variables for development Pod
 ### Settings.py File Database for Postgres container
 ```python

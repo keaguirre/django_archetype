@@ -1,7 +1,6 @@
 # Dev Environment for Django with PostgreSQL
-# Variable names are defined in the .env file
-# Check Readme for Settings.py for database connection settings for the Dev Pod
-version: '3.9'
+# Levantar con: docker compose up --build
+# La app queda en http://localhost:8000 y Postgres en localhost:5432
 
 services:
   db:
@@ -16,29 +15,34 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U django_admin -d django_archetype_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   web:
     build: .
     container_name: django_app
-    command: python manage.py runserver 0.0.0.0:8000
+    # Las migraciones no se versionan (ver .gitignore), por eso se generan al iniciar.
+    command: >
+      sh -c "python manage.py makemigrations users_api products_api &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      DATABASE_NAME: django_archetype_db
-      DATABASE_USER: django_admin
-      DATABASE_PASSWORD: DjangoDevPass
+      SECRET_KEY: dev-only-secret-key-change-me
+      POSTGRES_DB: django_archetype_db
+      POSTGRES_USER: django_admin
+      POSTGRES_PASSWORD: DjangoDevPass
       DATABASE_HOST: db
       DATABASE_PORT: 5432
 
-# Crear carpeta postgres_data en /etc de la maquina host para almacenar los datos de PostgreSQL
 volumes:
   postgres_data:
-    driver: local
-    driver_opts:
-      type: none
-      device: /etc/postgres_data
-      o: bind
